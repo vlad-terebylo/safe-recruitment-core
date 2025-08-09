@@ -1,1 +1,3 @@
-spring.application.name=SafeRecruitment
+spring:
+  application:
+    name: SafeRecruitment
