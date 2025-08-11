@@ -8,7 +8,7 @@ public class User {
     private String password;
     private String name;
     private String surname;
-    private float experience;
+    private int experience;
     private EducationLevel education;
     private String targetPosition;
     private String additionalInformation;
