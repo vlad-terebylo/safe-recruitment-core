@@ -3,6 +3,7 @@ package com.tvo.technologies.saferecruitment.model.company;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class Company {
@@ -17,5 +18,18 @@ public class Company {
         this.address = address;
         this.reviews = reviews;
         this.website = website;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (!(object instanceof Company company)) {
+            return false;
+        }
+
+        return Objects.equals(this.website, company.website);
     }
 }

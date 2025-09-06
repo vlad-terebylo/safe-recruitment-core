@@ -1,6 +1,7 @@
 package com.tvo.technologies.saferecruitment.controller;
 
 import com.tvo.technologies.saferecruitment.model.statistics.Statistics;
+import com.tvo.technologies.saferecruitment.model.statistics.UserStatistics;
 import com.tvo.technologies.saferecruitment.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class StatisticsController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Statistics> getStatistics(@PathVariable String userId){
+    public ResponseEntity<UserStatistics> getStatistics(@PathVariable String userId){
         return ResponseEntity.ok(this.statisticsService.getUserStatistics(userId));
     }
 }

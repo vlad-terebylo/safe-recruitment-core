@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/validation")
+@RequestMapping("/v1/validation")
 public class ValidationController {
 
     private final ValidationService validationService;

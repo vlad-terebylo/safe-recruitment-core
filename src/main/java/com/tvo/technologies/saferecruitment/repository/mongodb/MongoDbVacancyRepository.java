@@ -1,28 +1,23 @@
-package com.tvo.technologies.saferecruitment.service;
+package com.tvo.technologies.saferecruitment.repository.mongodb;
 
 import com.tvo.technologies.saferecruitment.model.vacancy.Vacancy;
 import com.tvo.technologies.saferecruitment.repository.VacancyRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class VacancyService {
-
-    private final VacancyRepository vacancyRepository;
-
+public class MongoDbVacancyRepository implements VacancyRepository {
+    @Override
     public List<Vacancy> getAllVacancies() {
         return null;
     }
 
+    @Override
     public Vacancy getVacancy(int id) {
         return null;
     }
 
-    public boolean addNewVacancy(Vacancy vacancy) {
+    @Override
+    public boolean save(Vacancy vacancy) {
         return false;
     }
-
 }
