@@ -1,7 +1,7 @@
 package com.tvo.technologies.saferecruitment.unit;
 
 import com.tvo.technologies.saferecruitment.exception.CompanyNotFoundException;
-import com.tvo.technologies.saferecruitment.exception.ThisCompanyAlreadyExistsException;
+import com.tvo.technologies.saferecruitment.exception.CompanyAlreadyExistsException;
 import com.tvo.technologies.saferecruitment.model.company.Company;
 import com.tvo.technologies.saferecruitment.repository.CompanyRepository;
 import com.tvo.technologies.saferecruitment.service.CompanyService;
@@ -47,6 +47,7 @@ public class CompanyServiceTest {
         when(companyRepository.getAllCompanies()).thenReturn(companies);
 
         List<Company> allCompanies = companyService.getAllCompanies();
+
         assertEquals(companies, allCompanies);
     }
 
@@ -55,6 +56,7 @@ public class CompanyServiceTest {
         when(companyRepository.getAllCompanies()).thenReturn(List.of());
 
         List<Company> emptyCompaniesList = companyService.getAllCompanies();
+
         assertEquals(List.of(), emptyCompaniesList);
     }
 
@@ -69,6 +71,8 @@ public class CompanyServiceTest {
         when(companyRepository.getAllCompanies()).thenReturn(List.of(company));
 
         List<Company> allCompanies = companyService.getAllCompanies();
+
+        assertEquals(1, allCompanies.size());
         assertEquals(List.of(company), allCompanies);
     }
 
@@ -82,15 +86,21 @@ public class CompanyServiceTest {
 
         when(companyRepository.getCompanyById(PRESENT_COMPANY_ID)).thenReturn(company);
 
-        Company gotCompany = companyService.getCompanyInfo(PRESENT_COMPANY_ID);
+        Company gotCompany = companyService.getCompanyById(PRESENT_COMPANY_ID);
 
         assertEquals(company, gotCompany);
     }
 
     @Test
     void should_throw_exception_if_company_id_is_wrong() {
-        when(companyRepository.getCompanyById(NOT_PRESENT_COMPANY_ID)).thenThrow(CompanyNotFoundException.class);
-        assertThrows(CompanyNotFoundException.class, () -> companyService.getCompanyInfo(PRESENT_COMPANY_ID));
+        when(companyRepository.getCompanyById(PRESENT_COMPANY_ID)).thenThrow(CompanyNotFoundException.class);
+
+        assertThrows(CompanyNotFoundException.class, () -> companyService.getCompanyById(PRESENT_COMPANY_ID));
+    }
+
+    @Test
+    void should_throw_exception_if_company_id_is_negative() {
+        assertThrows(CompanyNotFoundException.class, () -> companyService.getCompanyById(NOT_PRESENT_COMPANY_ID));
     }
 
     @Test
@@ -101,9 +111,13 @@ public class CompanyServiceTest {
                 List.of(),
                 "www.tvo-tech.com");
 
+        when(companyRepository.save(company)).thenReturn(true);
+
         boolean isAdded = companyService.addNewCompany(company);
-        verify(companyRepository, times(1)).save(company);
+
         assertTrue(isAdded);
+
+        verify(companyRepository, times(1)).save(company);
     }
 
     @Test
@@ -114,8 +128,8 @@ public class CompanyServiceTest {
                 List.of(),
                 "www.tvo-tech.com");
 
-        when(companyRepository.save(company)).thenThrow(ThisCompanyAlreadyExistsException.class);
-        assertFalse(companyService.addNewCompany(company));
-        assertThrows(ThisCompanyAlreadyExistsException.class, () -> companyService.addNewCompany(company));
+        when(companyRepository.save(company)).thenThrow(CompanyAlreadyExistsException.class);
+
+        assertThrows(CompanyAlreadyExistsException.class, () -> companyService.addNewCompany(company));
     }
 }

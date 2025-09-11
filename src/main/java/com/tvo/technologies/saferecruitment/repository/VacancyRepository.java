@@ -10,4 +10,6 @@ public interface VacancyRepository {
     Vacancy getVacancy(int id);
 
     boolean save(Vacancy vacancy);
+
+    boolean equal(Vacancy vacancy);
 }

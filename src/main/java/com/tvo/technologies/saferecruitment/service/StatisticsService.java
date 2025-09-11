@@ -18,19 +18,18 @@ public class StatisticsService {
     private final StatisticsRepository statisticsRepository;
 
     public Statistics getStatistics() {
-        log.info("Entering getStatistics()");
+        log.info("Getting global statistics");
         return statisticsRepository.getStatistics();
     }
 
     public UserStatistics getUserStatistics(String userId) {
-        log.info("Entering getUserStatistics()");
         if (Objects.isNull(userId)) {
-            log.warn("Called with invalid id");
+            log.error("Getting statistics for user with nullable id");
             throw new UserNotSpecifiedException("During fetching user statistics an exception occurred.\n" +
                     "User id is null");
         }
 
-        log.info("Getting user statistics");
+        log.info("Getting statistics for user with id: {}", userId);
         return statisticsRepository.getUserStatistics(userId);
     }
 }

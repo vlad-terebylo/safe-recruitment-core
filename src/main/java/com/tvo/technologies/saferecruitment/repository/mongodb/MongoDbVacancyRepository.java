@@ -20,4 +20,9 @@ public class MongoDbVacancyRepository implements VacancyRepository {
     public boolean save(Vacancy vacancy) {
         return false;
     }
+
+    @Override
+    public boolean equal(Vacancy vacancy) {
+        return false;
+    }
 }

@@ -1,5 +1,7 @@
 package com.tvo.technologies.saferecruitment.config;
 
+import com.tvo.technologies.saferecruitment.client.AiClient;
+import com.tvo.technologies.saferecruitment.client.ChatGptAiClient;
 import com.tvo.technologies.saferecruitment.repository.CompanyRepository;
 import com.tvo.technologies.saferecruitment.repository.StatisticsRepository;
 import com.tvo.technologies.saferecruitment.repository.UserRepository;
@@ -32,5 +34,10 @@ public class AppConfig {
     @Bean
     public VacancyRepository getVacancyRepository() {
         return new InMemoryVacancyRepository();
+    }
+
+    @Bean
+    public AiClient getAiClient() {
+        return new ChatGptAiClient();
     }
 }

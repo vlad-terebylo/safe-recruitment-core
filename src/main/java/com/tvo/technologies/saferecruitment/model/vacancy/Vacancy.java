@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class Vacancy {
@@ -17,5 +18,19 @@ public class Vacancy {
         this.position = position;
         this.description = description;
         this.requiredSkills = requiredSkills;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+
+        if (!(object instanceof Vacancy vacancy)) {
+            return false;
+        }
+
+        return Objects.equals(this.description, vacancy.description)
+                && Objects.equals(this.position, vacancy.position);
     }
 }

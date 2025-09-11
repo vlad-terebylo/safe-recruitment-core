@@ -1,10 +1,8 @@
 package com.tvo.technologies.saferecruitment.controller;
 
 import com.tvo.technologies.saferecruitment.model.company.Company;
-import com.tvo.technologies.saferecruitment.model.dto.BooleanResponseDto;
 import com.tvo.technologies.saferecruitment.service.CompanyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +22,6 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Company> getCompanyById(@PathVariable int id) {
-        return ResponseEntity.ok(this.companyService.getCompanyInfo(id));
+        return ResponseEntity.ok(this.companyService.getCompanyById(id));
     }
 }
