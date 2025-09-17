@@ -1,5 +1,7 @@
 package com.tvo.technologies.saferecruitment.model.user;
 
+import com.tvo.technologies.saferecruitment.model.dto.ChangePsswdRequestDto;
+import com.tvo.technologies.saferecruitment.model.dto.UserUpdateDto;
 import lombok.Data;
 
 import java.util.Objects;
@@ -18,6 +20,26 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public User(String name, String surname, int experience, EducationLevel education, String targetPosition, String additionalInformation) {
+        this.name = name;
+        this.surname = surname;
+        this.experience = experience;
+        this.education = education;
+        this.targetPosition = targetPosition;
+        this.additionalInformation = additionalInformation;
+    }
+
+    public User(String email, String password, String name, String surname, int experience, EducationLevel education, String targetPosition, String additionalInformation) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.experience = experience;
+        this.education = education;
+        this.targetPosition = targetPosition;
+        this.additionalInformation = additionalInformation;
     }
 
     @Override

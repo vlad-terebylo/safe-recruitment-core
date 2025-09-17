@@ -1,6 +1,6 @@
 package com.tvo.technologies.saferecruitment.service;
 
-import com.tvo.technologies.saferecruitment.exception.UserNotSpecifiedException;
+import com.tvo.technologies.saferecruitment.exception.InvalidUserIdException;
 import com.tvo.technologies.saferecruitment.model.statistics.Statistics;
 import com.tvo.technologies.saferecruitment.model.statistics.UserStatistics;
 import com.tvo.technologies.saferecruitment.repository.StatisticsRepository;
@@ -25,7 +25,7 @@ public class StatisticsService {
     public UserStatistics getUserStatistics(String userId) {
         if (Objects.isNull(userId)) {
             log.error("Getting statistics for user with nullable id");
-            throw new UserNotSpecifiedException("During fetching user statistics an exception occurred.\n" +
+            throw new InvalidUserIdException("During fetching user statistics an exception occurred.\n" +
                     "User id is null");
         }
 

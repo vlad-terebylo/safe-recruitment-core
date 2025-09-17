@@ -1,6 +1,8 @@
 package com.tvo.technologies.saferecruitment.controller;
 
 import com.tvo.technologies.saferecruitment.model.dto.BooleanResponseDto;
+import com.tvo.technologies.saferecruitment.model.dto.ChangePsswdRequestDto;
+import com.tvo.technologies.saferecruitment.model.dto.UserUpdateDto;
 import com.tvo.technologies.saferecruitment.model.user.User;
 import com.tvo.technologies.saferecruitment.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,22 +21,30 @@ public class UserController {
         return ResponseEntity.ok(this.userService.getUser(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BooleanResponseDto> updateUser(
-            @PathVariable String id,
-            @RequestBody User user) {
-        return ResponseEntity.ok(new BooleanResponseDto(this.userService.updateUser(id, user)));
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<BooleanResponseDto> changePassword(
-            @PathVariable String id,
-            @RequestBody User user) {
-        return ResponseEntity.ok(new BooleanResponseDto(this.userService.changePassword(id, user)));
-    }
-
     @PostMapping
     public ResponseEntity<BooleanResponseDto> addNewUser(@RequestBody User user) {
         return ResponseEntity.ok(new BooleanResponseDto(this.userService.addNewUser(user)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BooleanResponseDto> updateUser(
+            @PathVariable String id,
+            @RequestBody UserUpdateDto userUpdateDto) {
+
+        return ResponseEntity.ok(new BooleanResponseDto(this.userService.updateUser(id, new User(
+                userUpdateDto.name(),
+                userUpdateDto.surname(),
+                userUpdateDto.experience(),
+                userUpdateDto.educationLevel(),
+                userUpdateDto.targetPosition(),
+                userUpdateDto.additionalInformation()
+        ))));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<BooleanResponseDto> changePsswd(
+            @PathVariable String id,
+            @RequestBody ChangePsswdRequestDto changePsswdRequestDto) {
+        return ResponseEntity.ok(new BooleanResponseDto(this.userService.changePsswd(id, changePsswdRequestDto.psswd())));
     }
 }

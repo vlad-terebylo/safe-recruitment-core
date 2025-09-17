@@ -1,7 +1,7 @@
 package com.tvo.technologies.saferecruitment.unit;
 
 import com.tvo.technologies.saferecruitment.exception.UserNotFoundException;
-import com.tvo.technologies.saferecruitment.exception.UserNotSpecifiedException;
+import com.tvo.technologies.saferecruitment.exception.InvalidUserIdException;
 import com.tvo.technologies.saferecruitment.model.statistics.Statistics;
 import com.tvo.technologies.saferecruitment.model.statistics.UserStatistics;
 import com.tvo.technologies.saferecruitment.repository.StatisticsRepository;
@@ -70,7 +70,7 @@ public class StatisticsServiceTest {
 
     @Test
     void should_throw_exception_if_user_id_is_null() {
-        assertThrows(UserNotSpecifiedException.class, () -> statisticsService.getUserStatistics(null));
+        assertThrows(InvalidUserIdException.class, () -> statisticsService.getUserStatistics(null));
     }
 
     @Test

@@ -11,5 +11,4 @@ public interface VacancyRepository {
 
     boolean save(Vacancy vacancy);
 
-    boolean equal(Vacancy vacancy);
 }

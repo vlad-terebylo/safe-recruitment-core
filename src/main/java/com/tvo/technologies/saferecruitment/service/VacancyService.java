@@ -34,7 +34,7 @@ public class VacancyService {
     }
 
     public boolean addNewVacancy(Vacancy vacancy) {
-        if (nonValid(vacancy)) {
+        if (isInvalid(vacancy)) {
             log.error("Trying to add invalid vacancy. Some parameters are null");
             throw new VacancyIsNotValidException("Some of vacancy parameters are null");
         }
@@ -43,7 +43,7 @@ public class VacancyService {
         return vacancyRepository.save(vacancy);
     }
 
-    private boolean nonValid(Vacancy vacancy) {
+    private boolean isInvalid(Vacancy vacancy) {
         return Objects.isNull(vacancy.getPosition())
                 || Objects.isNull(vacancy.getDescription())
                 || Objects.isNull(vacancy.getRequiredSkills());

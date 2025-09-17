@@ -15,7 +15,7 @@ public class MongoDbUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean changePassword(String id, User user) {
+    public boolean changePsswd(String id, String psswd) {
         return false;
     }
 

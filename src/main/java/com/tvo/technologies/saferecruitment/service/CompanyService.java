@@ -34,7 +34,7 @@ public class CompanyService {
     }
 
     public boolean addNewCompany(Company company) {
-        if (nonValid(company)) {
+        if (isInvalid(company)) {
             log.error("Trying to add invalid company. Some parameters are null");
             throw new InvalidCompanyException("Some of company parameters are null");
         }
@@ -43,7 +43,7 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    private boolean nonValid(Company company) {
+    private boolean isInvalid(Company company) {
         return Objects.isNull(company.getTitle())
                 || Objects.isNull(company.getAddress())
                 || Objects.isNull(company.getReviews())
