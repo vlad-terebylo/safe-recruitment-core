@@ -29,7 +29,7 @@ public class UserService {
     public boolean addNewUser(User user) {
         if (isInvalidForCreate(user)) {
             log.error("Some of user's params are null");
-            throw new UserNotFoundException("User is invalid");
+            throw new InvalidUserException("User is invalid for creation");
         }
 
         log.info("Adding new user");

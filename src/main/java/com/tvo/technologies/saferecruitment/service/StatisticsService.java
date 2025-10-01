@@ -1,9 +1,9 @@
 package com.tvo.technologies.saferecruitment.service;
 
 import com.tvo.technologies.saferecruitment.exception.InvalidUserIdException;
+import com.tvo.technologies.saferecruitment.exception.ValidationResponsesLogicalException;
+import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
 import com.tvo.technologies.saferecruitment.model.statistics.Statistics;
-import com.tvo.technologies.saferecruitment.model.statistics.UserStatistics;
-import com.tvo.technologies.saferecruitment.repository.StatisticsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,21 +15,46 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class StatisticsService {
 
-    private final StatisticsRepository statisticsRepository;
+    private final ValidationService validationService;
 
     public Statistics getStatistics() {
         log.info("Getting global statistics");
-        return statisticsRepository.getStatistics();
+        long countedValidationResponses = validationService.countValidationResponses();
+        long countedValidationResponsesByVerdict = validationService.countValidationResponsesByVerdict(ValidationVerdict.SCAM);
+
+        return buildStatistics(countedValidationResponses, countedValidationResponsesByVerdict);
     }
 
-    public UserStatistics getUserStatistics(String userId) {
+    public Statistics getUserStatistics(String userId) {
+        log.info("Getting statistics for user with id: {}", userId);
+
         if (Objects.isNull(userId)) {
             log.error("Getting statistics for user with nullable id");
             throw new InvalidUserIdException("During fetching user statistics an exception occurred.\n" +
                     "User id is null");
         }
 
-        log.info("Getting statistics for user with id: {}", userId);
-        return statisticsRepository.getUserStatistics(userId);
+        long countedValidationResponses = validationService.countValidationResponses(userId);
+        long countedValidationResponsesByVerdict = validationService.countValidationResponsesByVerdict(userId, ValidationVerdict.SCAM);
+
+        return buildStatistics(countedValidationResponses, countedValidationResponsesByVerdict);
+    }
+
+    private Statistics buildStatistics(long countedValidationResponses, long countedValidationResponsesByVerdict) {
+        if (countedValidationResponsesByVerdict > countedValidationResponses) {
+            throw new ValidationResponsesLogicalException("The number of validated responses by verdict should not be greater than the total number of responses");
+        }
+
+        if (countedValidationResponses <= 0) {
+            throw new IllegalArgumentException("The number of validated responses should not be zero or negative");
+        }
+
+        if (countedValidationResponsesByVerdict < 0) {
+            throw new IllegalArgumentException("The number of validated responses by verdict should not be negative");
+        }
+
+        float percentageOfScamVacancies = (float) (countedValidationResponsesByVerdict * 100) / countedValidationResponses;
+
+        return new Statistics(percentageOfScamVacancies, countedValidationResponses);
     }
 }

@@ -104,8 +104,6 @@ public class UserServiceTest {
         boolean newPasswordSaved = userService.changePsswd(PRESENT_ID, newPassword);
 
         user.setPassword(newPassword);
-
-
         assertTrue(newPasswordSaved);
     }
 
@@ -144,5 +142,13 @@ public class UserServiceTest {
         when(userRepository.addNewUser(user)).thenThrow(UserAlreadyExistsException.class);
 
         assertThrows(UserAlreadyExistsException.class, () -> userService.addNewUser(user));
+    }
+
+    @Test
+    void should_throw_exception_if_user_is_invalid() {
+        User user = new User("tvotech@mail.com",
+                null);
+
+        assertThrows(InvalidUserException.class, () -> userService.addNewUser(user));
     }
 }

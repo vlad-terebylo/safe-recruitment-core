@@ -1,9 +1,11 @@
 package com.tvo.technologies.saferecruitment.service;
 
 import com.tvo.technologies.saferecruitment.client.AiClient;
+import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
 import com.tvo.technologies.saferecruitment.model.validation.CompanyValidationRequest;
 import com.tvo.technologies.saferecruitment.model.validation.VacancyValidationRequest;
 import com.tvo.technologies.saferecruitment.model.validation.ValidationResponse;
+import com.tvo.technologies.saferecruitment.repository.ValidationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +14,29 @@ import org.springframework.stereotype.Service;
 public class ValidationService {
 
     private final AiClient aiClient;
+    private ValidationRepository validationRepository;
 
-    private final CompanyService companyService;
-    private final VacancyService vacancyService;
+    public long countValidationResponses() {
+        return validationRepository.count();
+    }
+
+    public long countValidationResponses(String userId) {
+        return validationRepository.count(userId);
+    }
+
+    public long countValidationResponsesByVerdict(ValidationVerdict verdict) {
+        return validationRepository.countByVerdict(verdict);
+    }
+
+    public long countValidationResponsesByVerdict(String userId, ValidationVerdict verdict) {
+        return validationRepository.countByVerdict(userId, verdict);
+    }
 
     public ValidationResponse vacancyValidation(VacancyValidationRequest vacancy) {
-        return null;
+        return aiClient.validate("");
     }
 
     public ValidationResponse companyValidation(CompanyValidationRequest company) {
-        return null;
+        return aiClient.validate("");
     }
 }

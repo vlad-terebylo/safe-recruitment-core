@@ -2,14 +2,8 @@ package com.tvo.technologies.saferecruitment.config;
 
 import com.tvo.technologies.saferecruitment.client.AiClient;
 import com.tvo.technologies.saferecruitment.client.ChatGptAiClient;
-import com.tvo.technologies.saferecruitment.repository.CompanyRepository;
-import com.tvo.technologies.saferecruitment.repository.StatisticsRepository;
-import com.tvo.technologies.saferecruitment.repository.UserRepository;
-import com.tvo.technologies.saferecruitment.repository.VacancyRepository;
-import com.tvo.technologies.saferecruitment.repository.inmemory.InMemoryCompanyRepository;
-import com.tvo.technologies.saferecruitment.repository.inmemory.InMemoryStatisticsRepository;
-import com.tvo.technologies.saferecruitment.repository.inmemory.InMemoryUserRepository;
-import com.tvo.technologies.saferecruitment.repository.inmemory.InMemoryVacancyRepository;
+import com.tvo.technologies.saferecruitment.repository.*;
+import com.tvo.technologies.saferecruitment.repository.inmemory.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,5 +33,10 @@ public class AppConfig {
     @Bean
     public AiClient getAiClient() {
         return new ChatGptAiClient();
+    }
+
+    @Bean
+    public ValidationRepository getValidationResult() {
+        return new InMemoryValidationRepository();
     }
 }
