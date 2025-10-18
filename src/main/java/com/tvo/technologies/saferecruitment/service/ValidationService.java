@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class ValidationService {
 
     private final AiClient aiClient;
-    private ValidationRepository validationRepository;
+    private final ValidationRepository validationRepository;
 
     public long countValidationResponses() {
         return validationRepository.count();
@@ -33,10 +33,10 @@ public class ValidationService {
     }
 
     public ValidationResponse vacancyValidation(VacancyValidationRequest vacancy) {
-        return aiClient.validate("");
+        return aiClient.validate(vacancy);
     }
 
     public ValidationResponse companyValidation(CompanyValidationRequest company) {
-        return aiClient.validate("");
+        return aiClient.validate(company);
     }
 }

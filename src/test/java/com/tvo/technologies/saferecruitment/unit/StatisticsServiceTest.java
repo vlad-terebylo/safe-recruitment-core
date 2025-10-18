@@ -5,7 +5,6 @@ import com.tvo.technologies.saferecruitment.exception.InvalidUserIdException;
 import com.tvo.technologies.saferecruitment.exception.ValidationResponsesLogicalException;
 import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
 import com.tvo.technologies.saferecruitment.model.statistics.Statistics;
-import com.tvo.technologies.saferecruitment.repository.StatisticsRepository;
 import com.tvo.technologies.saferecruitment.service.StatisticsService;
 import com.tvo.technologies.saferecruitment.service.ValidationService;
 import org.junit.jupiter.api.Test;

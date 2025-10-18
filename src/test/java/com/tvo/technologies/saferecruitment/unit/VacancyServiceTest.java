@@ -1,6 +1,7 @@
 package com.tvo.technologies.saferecruitment.unit;
 
 import com.tvo.technologies.saferecruitment.exception.VacancyAlreadyExistsException;
+import com.tvo.technologies.saferecruitment.exception.VacancyIsNotValidException;
 import com.tvo.technologies.saferecruitment.exception.VacancyNotFoundException;
 import com.tvo.technologies.saferecruitment.model.vacancy.Vacancy;
 import com.tvo.technologies.saferecruitment.repository.VacancyRepository;
@@ -106,5 +107,11 @@ public class VacancyServiceTest {
         when(vacancyRepository.save(vacancy)).thenThrow(VacancyAlreadyExistsException.class);
 
         assertThrows(VacancyAlreadyExistsException.class, () -> vacancyService.addNewVacancy(vacancy));
+    }
+
+    @Test
+    void should_throw_vacancy_is_not_valid_exception() {
+        Vacancy invalidVacancy = new Vacancy("Java software developer", "No description", null);
+        assertThrows(VacancyIsNotValidException.class, () -> vacancyService.addNewVacancy(invalidVacancy));
     }
 }
