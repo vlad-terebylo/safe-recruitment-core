@@ -8,11 +8,13 @@ import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
 import com.tvo.technologies.saferecruitment.model.validation.CompanyValidationRequest;
 import com.tvo.technologies.saferecruitment.model.validation.VacancyValidationRequest;
 import com.tvo.technologies.saferecruitment.model.validation.ValidationResponse;
-import com.tvo.technologies.saferecruitment.service.CompanyService;
-import com.tvo.technologies.saferecruitment.service.VacancyService;
+import com.tvo.technologies.saferecruitment.repository.ValidationRepository;
 import com.tvo.technologies.saferecruitment.service.ValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -29,10 +31,9 @@ import static org.mockito.Mockito.when;
 public class ValidationServiceTest {
     @Mock
     private AiClient aiClient;
+
     @Mock
-    private CompanyService companyService;
-    @Mock
-    private VacancyService vacancyService;
+    private ValidationRepository validationRepository;
 
     @InjectMocks
     private ValidationService validationService;
@@ -174,7 +175,7 @@ public class ValidationServiceTest {
 
     @Test
     void should_not_get_valid_company_validation_response_if_validation_request_is_invalid() {
-        assertThrows(InvalidCompanyValidationRequestException.class, ()->validationService.companyValidation(null));
+        assertThrows(InvalidCompanyValidationRequestException.class, () -> validationService.companyValidation(null));
     }
 
     @Test
@@ -189,4 +190,51 @@ public class ValidationServiceTest {
         assertThrows(InvalidCompanyValidationRequestException.class, () -> validationService.companyValidation(companyValidationRequest));
     }
 
+    @ParameterizedTest
+    @ValueSource(longs = {0, 12})
+    void should_count_number_of_global_validation_responses(long expected) {
+
+        when(validationRepository.count()).thenReturn(expected);
+
+        long actual = validationService.countValidationResponses();
+
+        assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {0, 7})
+    void should_count_number_of_validation_responses_for_certain_user(long expected) {
+        String userId = "1";
+
+        when(validationRepository.count(userId)).thenReturn(expected);
+
+        long actual = validationService.countValidationResponses(userId);
+
+        assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest(name = "Verdict = {0}")
+    @EnumSource(ValidationVerdict.class)
+    void should_count_number_of_global_validation_responses_by_verdict(ValidationVerdict verdict) {
+        long expected = 3;
+
+        when(validationRepository.countByVerdict(verdict)).thenReturn(expected);
+
+        long actual = validationService.countValidationResponsesByVerdict(verdict);
+
+        assertEquals(expected, actual);
+    }
+
+    @ParameterizedTest(name = "Verdict = {0}")
+    @EnumSource(ValidationVerdict.class)
+    void should_count_number_of_validation_responses_for_certain_user_by_truthful_verdict(ValidationVerdict verdict) {
+        long expected = 3;
+        String userId = "1";
+
+        when(validationRepository.countByVerdict(userId, verdict)).thenReturn(expected);
+
+        long actual = validationService.countValidationResponsesByVerdict(userId, verdict);
+
+        assertEquals(expected, actual);
+    }
 }
