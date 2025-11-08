@@ -7,6 +7,7 @@ import com.tvo.technologies.saferecruitment.service.ValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,12 +19,12 @@ public class ValidationController {
     private final ValidationService validationService;
 
     @PostMapping("/vacancy")
-    public ResponseEntity<ValidationResponse> vacancyValidation(VacancyValidationRequest vacancy) {
+    public ResponseEntity<ValidationResponse> vacancyValidation(@RequestBody VacancyValidationRequest vacancy) {
         return ResponseEntity.ok(this.validationService.vacancyValidation(vacancy));
     }
 
     @PostMapping("/company")
-    public ResponseEntity<ValidationResponse> companyValidation(CompanyValidationRequest company) {
+    public ResponseEntity<ValidationResponse> companyValidation(@RequestBody CompanyValidationRequest company) {
         return ResponseEntity.ok(this.validationService.companyValidation(company));
     }
 }

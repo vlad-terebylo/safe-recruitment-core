@@ -2,6 +2,7 @@ package com.tvo.technologies.saferecruitment.unit;
 
 import com.tvo.technologies.saferecruitment.exception.CompanyNotFoundException;
 import com.tvo.technologies.saferecruitment.exception.CompanyAlreadyExistsException;
+import com.tvo.technologies.saferecruitment.exception.InvalidCompanyException;
 import com.tvo.technologies.saferecruitment.model.company.Company;
 import com.tvo.technologies.saferecruitment.repository.CompanyRepository;
 import com.tvo.technologies.saferecruitment.service.CompanyService;
@@ -131,5 +132,16 @@ public class CompanyServiceTest {
         when(companyRepository.save(company)).thenThrow(CompanyAlreadyExistsException.class);
 
         assertThrows(CompanyAlreadyExistsException.class, () -> companyService.addNewCompany(company));
+    }
+
+    @Test
+    void should_throw_exception_if_company_is_invalid() {
+        Company company = new Company(
+                null,
+                "Vladyslava 2005",
+                List.of(),
+                "www.tvo-tech.com");
+
+        assertThrows(InvalidCompanyException.class, () -> companyService.addNewCompany(company));
     }
 }

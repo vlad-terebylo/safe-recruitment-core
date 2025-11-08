@@ -1,6 +1,5 @@
 package com.tvo.technologies.saferecruitment.service;
 
-import com.tvo.technologies.saferecruitment.client.AiClient;
 import com.tvo.technologies.saferecruitment.exception.InvalidCompanyValidationRequestException;
 import com.tvo.technologies.saferecruitment.exception.InvalidVacancyRequestException;
 import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
@@ -19,30 +18,29 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ValidationService {
 
-    private final AiClient aiClient;
+    private final AiValidationService aiClient;
     private final ValidationRepository validationRepository;
 
     public long countValidationResponses() {
-
         log.info("Counting the total number of analyzed vacancies");
 
         return validationRepository.count();
     }
 
     public long countValidationResponses(String userId) {
-        log.info("Counting the number of analyzed vacancies by user with id " + userId);
+        log.info("Counting the number of analyzed vacancies by user with id {}", userId);
 
         return validationRepository.count(userId);
     }
 
     public long countValidationResponsesByVerdict(ValidationVerdict verdict) {
-        log.info("Counting the number of analyzed vacancies with certain verdict");
+        log.info("Counting the number of analyzed vacancies with certain verdict - {}", verdict);
 
         return validationRepository.countByVerdict(verdict);
     }
 
     public long countValidationResponsesByVerdict(String userId, ValidationVerdict verdict) {
-        log.info("Counting the number of analyzed vacancies with certain verdict by user with id " + userId);
+        log.info("Counting the number of analyzed vacancies with certain verdict by user with id {} and verdict - {}", userId, verdict);
 
         return validationRepository.countByVerdict(userId, verdict);
     }
@@ -58,7 +56,7 @@ public class ValidationService {
             throw new InvalidVacancyRequestException("Some of fields in vacancy validation request are null");
         }
 
-        log.info("Sending vacancy validation request to AI client");
+        log.info("Sending vacancy validation request for position {} to AI client", vacancy.position());
 
         return aiClient.validate(vacancy);
     }
@@ -81,7 +79,7 @@ public class ValidationService {
             throw new InvalidCompanyValidationRequestException("Some of fields in vacancy validation request are null");
         }
 
-        log.info("Sending vacancy validation request to AI client");
+        log.info("Sending company with title {} validation request to AI client", company.title());
 
         return aiClient.validate(company);
     }

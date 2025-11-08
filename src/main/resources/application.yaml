@@ -2,6 +2,11 @@ spring:
   application:
     name: safe-recruitment-core-service
 
+ai:
+  gemini-key: ${GEMINI_KEY}
+  openai-key: ${OPEN_AI_KEY}
+
+
 server:
   port: 2005
   servlet:

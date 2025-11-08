@@ -1,9 +1,14 @@
 package com.tvo.technologies.saferecruitment.config;
 
-import com.tvo.technologies.saferecruitment.client.AiClient;
-import com.tvo.technologies.saferecruitment.client.ChatGptAiClient;
+import com.google.genai.Client;
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.tvo.technologies.saferecruitment.properties.AiProperties;
 import com.tvo.technologies.saferecruitment.repository.*;
 import com.tvo.technologies.saferecruitment.repository.inmemory.*;
+import com.tvo.technologies.saferecruitment.service.AiValidationService;
+import com.tvo.technologies.saferecruitment.service.GeminiAiValidationService;
+import com.tvo.technologies.saferecruitment.service.OpenAiValidationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,12 +36,24 @@ public class AppConfig {
     }
 
     @Bean
-    public AiClient getAiClient() {
-        return new ChatGptAiClient();
+    public AiValidationService getAiAnalyzingService(Client client) {
+        return new GeminiAiValidationService(client);
+    }
+
+    @Bean
+    public Client getGeminiClient(AiProperties properties) {
+        return Client.builder()
+                .apiKey(properties.geminiKey())
+                .build();
     }
 
     @Bean
     public ValidationRepository getValidationResult() {
         return new InMemoryValidationRepository();
+    }
+
+    @Bean
+    public OpenAIClient getOpenAiClient(AiProperties properties) {
+        return new OpenAIOkHttpClient.Builder().apiKey(properties.openaiKey()).build();
     }
 }

@@ -1,0 +1,10 @@
+Now your task is to analyze the vacancy by criteria described before.
+
+Position: %s,
+Description: %s,
+requiredSkills: %s,
+salary: %s,
+location: %s,
+interviewProcessDetails: %s.
+
+As a response return JUST JSON entity

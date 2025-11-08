@@ -7,5 +7,7 @@ public record VacancyValidationRequest(
         String position,
         String description,
         List<String> requiredSkills,
-        BigDecimal salary) {
+        BigDecimal salary,
+        String location,
+        boolean interviewProcessDetails) {
 }

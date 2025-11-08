@@ -1,14 +1,15 @@
 package com.tvo.technologies.saferecruitment.unit;
 
-import com.tvo.technologies.saferecruitment.client.AiClient;
 import com.tvo.technologies.saferecruitment.exception.InvalidCompanyValidationRequestException;
 import com.tvo.technologies.saferecruitment.exception.InvalidVacancyRequestException;
 import com.tvo.technologies.saferecruitment.model.enums.RiskCategory;
+import com.tvo.technologies.saferecruitment.model.enums.VacancyRedFlags;
 import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
 import com.tvo.technologies.saferecruitment.model.validation.CompanyValidationRequest;
 import com.tvo.technologies.saferecruitment.model.validation.VacancyValidationRequest;
 import com.tvo.technologies.saferecruitment.model.validation.ValidationResponse;
 import com.tvo.technologies.saferecruitment.repository.ValidationRepository;
+import com.tvo.technologies.saferecruitment.service.AiValidationService;
 import com.tvo.technologies.saferecruitment.service.ValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,13 +25,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ValidationServiceTest {
     @Mock
-    private AiClient aiClient;
+    private AiValidationService aiClient;
 
     @Mock
     private ValidationRepository validationRepository;
@@ -44,16 +44,15 @@ public class ValidationServiceTest {
                 ValidationVerdict.SCAM,
                 "Description",
                 RiskCategory.HIGH,
-                List.of(
-                        "Very high salary for the very simple requirements",
-                        "No feedbacks about company found")
-        );
+                VacancyRedFlags.UNREALISTIC_SALARY);
 
         VacancyValidationRequest vacancy = new VacancyValidationRequest(
-                "Java software engineer",
+                "Barman",
                 "description",
-                List.of("Repair bugs"),
-                new BigDecimal(5000)
+                List.of("To serve client"),
+                new BigDecimal(5000),
+                "Prague",
+                true
         );
 
         when(aiClient.validate(vacancy)).thenReturn(validValidationResponse);
@@ -69,8 +68,7 @@ public class ValidationServiceTest {
                 ValidationVerdict.TRUTHFULNESS,
                 "Significant risks are not detected",
                 RiskCategory.LOW,
-                List.of(
-                        "No significant risk")
+                VacancyRedFlags.NO_RED_FLAGS
         );
 
         VacancyValidationRequest vacancy = new VacancyValidationRequest(
@@ -123,7 +121,9 @@ public class ValidationServiceTest {
                         "                        \" religion, sex (including pregnancy), sexual orientation, or any other characteristic protected by applicable local laws, regulations and ordinances.\" +\n" +
                         "                        \" If you need assistance and/or a reasonable accommodation due to a disability during the application process, read more about requesting accommodations.\"",
                 List.of("Repair bugs"),
-                new BigDecimal(1200)
+                new BigDecimal(1200),
+                "Prague",
+                true
         );
 
         when(aiClient.validate(vacancy)).thenReturn(validValidationResponse);
@@ -144,7 +144,8 @@ public class ValidationServiceTest {
                 "Senior software developer",
                 null,
                 null,
-                new BigDecimal(5000)
+                new BigDecimal(5000),
+                null, true
         );
 
         assertThrows(InvalidVacancyRequestException.class, () -> validationService.vacancyValidation(vacancyValidationRequest));
@@ -163,7 +164,7 @@ public class ValidationServiceTest {
                 ValidationVerdict.TRUTHFULNESS,
                 "Corporation with sufficient benefits.Good to work but very hard for entry",
                 RiskCategory.LOW,
-                List.of("Good place to work but do not believe to corporations. Never!")
+                VacancyRedFlags.NO_RED_FLAGS
         );
 
         when(aiClient.validate(companyValidationRequest)).thenReturn(expectedCompanyValidationResponse);
