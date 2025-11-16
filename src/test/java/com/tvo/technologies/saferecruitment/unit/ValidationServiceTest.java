@@ -3,7 +3,7 @@ package com.tvo.technologies.saferecruitment.unit;
 import com.tvo.technologies.saferecruitment.exception.InvalidCompanyValidationRequestException;
 import com.tvo.technologies.saferecruitment.exception.InvalidVacancyRequestException;
 import com.tvo.technologies.saferecruitment.model.enums.RiskCategory;
-import com.tvo.technologies.saferecruitment.model.enums.VacancyRedFlags;
+import com.tvo.technologies.saferecruitment.model.enums.RedFlags;
 import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
 import com.tvo.technologies.saferecruitment.model.validation.CompanyValidationRequest;
 import com.tvo.technologies.saferecruitment.model.validation.VacancyValidationRequest;
@@ -44,7 +44,7 @@ public class ValidationServiceTest {
                 ValidationVerdict.SCAM,
                 "Description",
                 RiskCategory.HIGH,
-                VacancyRedFlags.UNREALISTIC_SALARY);
+                RedFlags.UNREALISTIC_SALARY);
 
         VacancyValidationRequest vacancy = new VacancyValidationRequest(
                 "Barman",
@@ -68,7 +68,7 @@ public class ValidationServiceTest {
                 ValidationVerdict.TRUTHFULNESS,
                 "Significant risks are not detected",
                 RiskCategory.LOW,
-                VacancyRedFlags.NO_RED_FLAGS
+                RedFlags.NO_RED_FLAGS
         );
 
         VacancyValidationRequest vacancy = new VacancyValidationRequest(
@@ -164,7 +164,7 @@ public class ValidationServiceTest {
                 ValidationVerdict.TRUTHFULNESS,
                 "Corporation with sufficient benefits.Good to work but very hard for entry",
                 RiskCategory.LOW,
-                VacancyRedFlags.NO_RED_FLAGS
+                RedFlags.NO_RED_FLAGS
         );
 
         when(aiClient.validate(companyValidationRequest)).thenReturn(expectedCompanyValidationResponse);
