@@ -1,5 +1,6 @@
 package com.tvo.technologies.saferecruitment.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
@@ -8,7 +9,6 @@ import com.tvo.technologies.saferecruitment.repository.*;
 import com.tvo.technologies.saferecruitment.repository.inmemory.*;
 import com.tvo.technologies.saferecruitment.service.AiValidationService;
 import com.tvo.technologies.saferecruitment.service.GeminiAiValidationService;
-import com.tvo.technologies.saferecruitment.service.OpenAiValidationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,8 +36,8 @@ public class AppConfig {
     }
 
     @Bean
-    public AiValidationService getAiAnalyzingService(Client client) {
-        return new GeminiAiValidationService(client);
+    public AiValidationService getAiAnalyzingService(Client client, ObjectMapper mapper) {
+        return new GeminiAiValidationService(client, mapper);
     }
 
     @Bean
@@ -55,5 +55,10 @@ public class AppConfig {
     @Bean
     public OpenAIClient getOpenAiClient(AiProperties properties) {
         return new OpenAIOkHttpClient.Builder().apiKey(properties.openaiKey()).build();
+    }
+
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        return new ObjectMapper();
     }
 }

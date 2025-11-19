@@ -1,5 +1,6 @@
 package com.tvo.technologies.saferecruitment.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 import com.tvo.technologies.saferecruitment.model.validation.CompanyValidationRequest;
@@ -15,6 +16,7 @@ import static com.tvo.technologies.saferecruitment.service.util.Constants.*;
 public class GeminiAiValidationService implements AiValidationService {
 
     private final Client client;
+    private final ObjectMapper mapper;
 
     @Override
     public ValidationResponse validate(VacancyValidationRequest vacancy) {
@@ -22,15 +24,23 @@ public class GeminiAiValidationService implements AiValidationService {
                 vacancy.position(), vacancy.description(), vacancy.requiredSkills(),
                 vacancy.salary(), vacancy.location(), vacancy.interviewProcessDetails());
 
-        GenerateContentResponse response = client
+        String response = client
                 .models
                 .generateContent(
                         "gemini-2.5-flash",
                         VACANCY_CONTEXT_PROMPT + "\n" + vacancyValidationPrompt,
-                        null);
+                        null).text();
 
-        log.info("Returning a response from Gemini: {}", response.text());
-        return null;
+        String formattedResponse = response.substring(response.indexOf("{"), response.indexOf("}"));
+
+        log.info("Returning a response from Gemini: {}", formattedResponse);
+
+        try {
+            return mapper.readValue(formattedResponse, ValidationResponse.class);
+        } catch (Exception exception) {
+            log.error("During mapping vacancy an exception occurred", exception);
+            throw new RuntimeException(exception);
+        }
     }
 
     @Override
@@ -42,14 +52,22 @@ public class GeminiAiValidationService implements AiValidationService {
                 company.website()
         );
 
-        GenerateContentResponse response = client
+        String response = client
                 .models
                 .generateContent(
                         "gemini-2.5-flash",
                         COMPANY_CONTEXT_PROMPT + "\n" + companyValidationPrompt,
-                        null);
+                        null).text();
 
-        log.info("Returning a response from Gemini: {}", response.text());
-        return null;
+        String formattedResponse = response.substring(response.indexOf("{"), response.indexOf("}"));
+
+        log.info("Returning a response from Gemini: {}", formattedResponse);
+
+        try {
+            return mapper.readValue(formattedResponse, ValidationResponse.class);
+        } catch (Exception exception) {
+            log.error("During mapping company an exception occurred", exception);
+            throw new RuntimeException(exception);
+        }
     }
 }
