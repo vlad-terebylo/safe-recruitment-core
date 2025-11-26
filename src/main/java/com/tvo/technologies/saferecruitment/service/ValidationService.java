@@ -45,7 +45,7 @@ public class ValidationService {
         return validationRepository.countByVerdict(userId, verdict);
     }
 
-    public ValidationResponse vacancyValidation(VacancyValidationRequest vacancy) {
+    public ValidationResponse vacancyValidation(String userId, VacancyValidationRequest vacancy) {
         if (Objects.isNull(vacancy)) {
             log.error("Validation request is null");
             throw new InvalidVacancyRequestException("The vacancy validation request must not be null");
@@ -58,7 +58,9 @@ public class ValidationService {
 
         log.info("Sending vacancy validation request for position {} to AI client", vacancy.position());
 
-        return aiClient.validate(vacancy);
+        ValidationResponse response = aiClient.validate(vacancy);
+        validationRepository.save(userId, response);
+        return response;
     }
 
     private boolean checkVacancyValidationRequestFieldsIfItIsNull(VacancyValidationRequest vacancy) {
@@ -68,7 +70,7 @@ public class ValidationService {
                 || Objects.isNull(vacancy.salary());
     }
 
-    public ValidationResponse companyValidation(CompanyValidationRequest company) {
+    public ValidationResponse companyValidation(String userId, CompanyValidationRequest company) {
         if (Objects.isNull(company)) {
             log.error("Validation request is null");
             throw new InvalidCompanyValidationRequestException("The company validation request is null");
@@ -81,7 +83,9 @@ public class ValidationService {
 
         log.info("Sending company with title {} validation request to AI client", company.title());
 
-        return aiClient.validate(company);
+        ValidationResponse response = aiClient.validate(company);
+        validationRepository.save(userId, response);
+        return response;
     }
 
     private boolean checkCompanyValidationRequestFieldsIfItIsNull(CompanyValidationRequest company) {

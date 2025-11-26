@@ -29,6 +29,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ValidationServiceTest {
+    private static final String TEST_USER_ID = "1";
+
     @Mock
     private AiValidationService aiClient;
 
@@ -44,7 +46,7 @@ public class ValidationServiceTest {
                 ValidationVerdict.SCAM,
                 "Description",
                 RiskCategory.HIGH,
-                RedFlags.UNREALISTIC_SALARY);
+                List.of(RedFlags.UNREALISTIC_SALARY));
 
         VacancyValidationRequest vacancy = new VacancyValidationRequest(
                 "Barman",
@@ -57,7 +59,7 @@ public class ValidationServiceTest {
 
         when(aiClient.validate(vacancy)).thenReturn(validValidationResponse);
 
-        ValidationResponse actualValidationResponse = validationService.vacancyValidation(vacancy);
+        ValidationResponse actualValidationResponse = validationService.vacancyValidation(TEST_USER_ID, vacancy);
 
         assertEquals(actualValidationResponse, validValidationResponse);
     }
@@ -68,7 +70,7 @@ public class ValidationServiceTest {
                 ValidationVerdict.TRUTHFULNESS,
                 "Significant risks are not detected",
                 RiskCategory.LOW,
-                RedFlags.NO_RED_FLAGS
+                List.of(RedFlags.NO_RED_FLAGS)
         );
 
         VacancyValidationRequest vacancy = new VacancyValidationRequest(
@@ -128,14 +130,14 @@ public class ValidationServiceTest {
 
         when(aiClient.validate(vacancy)).thenReturn(validValidationResponse);
 
-        ValidationResponse actualValidationResponse = validationService.vacancyValidation(vacancy);
+        ValidationResponse actualValidationResponse = validationService.vacancyValidation(TEST_USER_ID, vacancy);
 
         assertEquals(actualValidationResponse, validValidationResponse);
     }
 
     @Test
     void should_not_get_valid_vacancy_validation_response_if_validation_request_is_invalid() {
-        assertThrows(InvalidVacancyRequestException.class, () -> validationService.vacancyValidation(null));
+        assertThrows(InvalidVacancyRequestException.class, () -> validationService.vacancyValidation("1", null));
     }
 
     @Test
@@ -148,7 +150,7 @@ public class ValidationServiceTest {
                 null, true
         );
 
-        assertThrows(InvalidVacancyRequestException.class, () -> validationService.vacancyValidation(vacancyValidationRequest));
+        assertThrows(InvalidVacancyRequestException.class, () -> validationService.vacancyValidation(TEST_USER_ID, vacancyValidationRequest));
     }
 
     @Test
@@ -164,19 +166,19 @@ public class ValidationServiceTest {
                 ValidationVerdict.TRUTHFULNESS,
                 "Corporation with sufficient benefits.Good to work but very hard for entry",
                 RiskCategory.LOW,
-                RedFlags.NO_RED_FLAGS
+                List.of(RedFlags.NO_RED_FLAGS)
         );
 
         when(aiClient.validate(companyValidationRequest)).thenReturn(expectedCompanyValidationResponse);
 
-        ValidationResponse actualCompanyValidationResponse = validationService.companyValidation(companyValidationRequest);
+        ValidationResponse actualCompanyValidationResponse = validationService.companyValidation(TEST_USER_ID, companyValidationRequest);
 
         assertEquals(expectedCompanyValidationResponse, actualCompanyValidationResponse);
     }
 
     @Test
     void should_not_get_valid_company_validation_response_if_validation_request_is_invalid() {
-        assertThrows(InvalidCompanyValidationRequestException.class, () -> validationService.companyValidation(null));
+        assertThrows(InvalidCompanyValidationRequestException.class, () -> validationService.companyValidation(TEST_USER_ID, null));
     }
 
     @Test
@@ -188,7 +190,7 @@ public class ValidationServiceTest {
                 null
         );
 
-        assertThrows(InvalidCompanyValidationRequestException.class, () -> validationService.companyValidation(companyValidationRequest));
+        assertThrows(InvalidCompanyValidationRequestException.class, () -> validationService.companyValidation(TEST_USER_ID, companyValidationRequest));
     }
 
     @ParameterizedTest

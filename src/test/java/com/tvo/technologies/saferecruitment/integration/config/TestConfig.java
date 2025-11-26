@@ -6,10 +6,6 @@ import org.springframework.context.annotation.Bean;
 
 @TestConfiguration
 public class TestConfig {
-    @Bean
-    public TestCompanyRepository getCompanyRepo() {
-        return new TestCompanyRepository();
-    }
 
     @Bean
     public TestStatisticsRepository getStatisticsRepo() {
@@ -19,11 +15,6 @@ public class TestConfig {
     @Bean
     public TestUserRepository getUserRepo() {
         return new TestUserRepository();
-    }
-
-    @Bean
-    public TestVacancyRepository getVacancyRepo() {
-        return new TestVacancyRepository();
     }
 
     @Bean

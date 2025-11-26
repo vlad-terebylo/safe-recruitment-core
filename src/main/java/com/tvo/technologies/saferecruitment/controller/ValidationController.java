@@ -6,10 +6,7 @@ import com.tvo.technologies.saferecruitment.model.validation.ValidationResponse;
 import com.tvo.technologies.saferecruitment.service.ValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,13 +15,13 @@ public class ValidationController {
 
     private final ValidationService validationService;
 
-    @PostMapping("/vacancy")
-    public ResponseEntity<ValidationResponse> vacancyValidation(@RequestBody VacancyValidationRequest vacancy) {
-        return ResponseEntity.ok(this.validationService.vacancyValidation(vacancy));
+    @PostMapping("/vacancy/{userId}")
+    public ResponseEntity<ValidationResponse> vacancyValidation(@RequestParam String userId, @RequestBody VacancyValidationRequest vacancy) {
+        return ResponseEntity.ok(this.validationService.vacancyValidation(userId, vacancy));
     }
 
-    @PostMapping("/company")
-    public ResponseEntity<ValidationResponse> companyValidation(@RequestBody CompanyValidationRequest company) {
-        return ResponseEntity.ok(this.validationService.companyValidation(company));
+    @PostMapping("/company/{userId}")
+    public ResponseEntity<ValidationResponse> companyValidation(@RequestParam String userId, @RequestBody CompanyValidationRequest company) {
+        return ResponseEntity.ok(this.validationService.companyValidation(userId, company));
     }
 }

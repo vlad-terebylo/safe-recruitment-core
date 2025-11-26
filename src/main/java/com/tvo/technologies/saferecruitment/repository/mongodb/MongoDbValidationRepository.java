@@ -1,27 +1,18 @@
-package com.tvo.technologies.saferecruitment.repository.inmemory;
+package com.tvo.technologies.saferecruitment.repository.mongodb;
 
 import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
-import com.tvo.technologies.saferecruitment.model.validation.ValidationRecord;
 import com.tvo.technologies.saferecruitment.model.validation.ValidationResponse;
 import com.tvo.technologies.saferecruitment.repository.ValidationRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class InMemoryValidationRepository implements ValidationRepository {
-
-    private final List<ValidationRecord> validationRecords = new ArrayList<>();
-
+public class MongoDbValidationRepository implements ValidationRepository {
     @Override
     public boolean save(String userId, ValidationResponse validationResponse) {
-        ValidationRecord record = new ValidationRecord(userId, validationResponse);
-
-        return validationRecords.add(record);
+        return false;
     }
 
     @Override
     public long count() {
-        return validationRecords.size();
+        return 0;
     }
 
     @Override

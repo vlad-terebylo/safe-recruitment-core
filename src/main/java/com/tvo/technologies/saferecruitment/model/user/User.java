@@ -2,12 +2,17 @@ package com.tvo.technologies.saferecruitment.model.user;
 
 import com.tvo.technologies.saferecruitment.model.dto.ChangePsswdRequestDto;
 import com.tvo.technologies.saferecruitment.model.dto.UserUpdateDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.With;
 
 import java.util.Objects;
 
 @Data
+@With
+@AllArgsConstructor
 public class User {
+    private String id;
     private String email;
     private String password;
     private String name;

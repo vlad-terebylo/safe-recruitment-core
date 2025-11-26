@@ -75,6 +75,6 @@ public class UserService {
         }
 
         log.info("Changing password");
-        return userRepository.changePsswd(id, psswd);
+        return userRepository.updateUser(id, user.withPassword(psswd));
     }
 }

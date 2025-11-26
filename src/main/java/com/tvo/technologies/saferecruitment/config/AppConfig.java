@@ -16,11 +16,6 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
-    public CompanyRepository getCompanyRepository() {
-        return new InMemoryCompanyRepository();
-    }
-
-    @Bean
     public StatisticsRepository getStatisticsRepository() {
         return new InMemoryStatisticsRepository();
     }
@@ -28,11 +23,6 @@ public class AppConfig {
     @Bean
     public UserRepository getUserRepository() {
         return new InMemoryUserRepository();
-    }
-
-    @Bean
-    public VacancyRepository getVacancyRepository() {
-        return new InMemoryVacancyRepository();
     }
 
     @Bean

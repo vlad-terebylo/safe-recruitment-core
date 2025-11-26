@@ -8,7 +8,5 @@ public interface UserRepository {
 
     boolean updateUser(String id, User user);
 
-    boolean changePsswd(String id, String psswd);
-
     boolean addNewUser(User user);
 }
