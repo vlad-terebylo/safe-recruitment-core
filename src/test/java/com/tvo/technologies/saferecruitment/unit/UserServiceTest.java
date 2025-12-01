@@ -1,7 +1,6 @@
 package com.tvo.technologies.saferecruitment.unit;
 
 import com.tvo.technologies.saferecruitment.exception.*;
-import com.tvo.technologies.saferecruitment.model.dto.UserUpdateDto;
 import com.tvo.technologies.saferecruitment.model.user.EducationLevel;
 import com.tvo.technologies.saferecruitment.model.user.User;
 import com.tvo.technologies.saferecruitment.repository.UserRepository;
@@ -17,7 +16,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
-
     private static final String PRESENT_ID = "1";
     private static final String NOT_PRESENT_ID = "-1";
 
@@ -99,7 +97,7 @@ public class UserServiceTest {
 
         String newPassword = "liopkjhfgqew_789/*-+";
 
-        when(userRepository.changePsswd(PRESENT_ID, newPassword)).thenReturn(true);
+        when(userRepository.updateUser(PRESENT_ID, user)).thenReturn(true);
 
         boolean newPasswordSaved = userService.changePsswd(PRESENT_ID, newPassword);
 
@@ -125,7 +123,7 @@ public class UserServiceTest {
         User user = new User("tvotech@mail.com",
                 "qwas78/*KIUH");
 
-        when(userRepository.addNewUser(user)).thenReturn(true);
+        when(userRepository.addNewUser(user)).thenReturn(PRESENT_ID);
 
         boolean isSaved = userService.addNewUser(user);
 

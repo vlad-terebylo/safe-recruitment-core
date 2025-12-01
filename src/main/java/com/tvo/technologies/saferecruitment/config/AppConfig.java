@@ -16,11 +16,6 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
-    public StatisticsRepository getStatisticsRepository() {
-        return new InMemoryStatisticsRepository();
-    }
-
-    @Bean
     public UserRepository getUserRepository() {
         return new InMemoryUserRepository();
     }

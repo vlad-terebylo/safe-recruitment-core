@@ -1,39 +1,35 @@
-package com.tvo.technologies.saferecruitment.repository.inmemory;
+package com.tvo.technologies.saferecruitment.integration.config.repository.inmemory;
 
 import com.tvo.technologies.saferecruitment.model.enums.ValidationVerdict;
 import com.tvo.technologies.saferecruitment.model.validation.ValidationRecord;
 import com.tvo.technologies.saferecruitment.model.validation.ValidationResponse;
-import com.tvo.technologies.saferecruitment.repository.ValidationRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryValidationRepository implements ValidationRepository {
-
+public class TestInMemoryValidationRepository {
     private final List<ValidationRecord> validationRecords = new ArrayList<>();
 
-    @Override
     public boolean save(String userId, ValidationResponse validationResponse) {
         ValidationRecord record = new ValidationRecord(userId, validationResponse);
 
         return validationRecords.add(record);
     }
 
-    @Override
     public long count() {
         return validationRecords.size();
     }
 
-    @Override
     public long count(String userId) {
+        int id = Integer.parseInt(userId);
+
         List<ValidationRecord> sortedList = validationRecords.stream()
-                .filter(record -> record.getUserId().equals(userId))
+                .filter(record -> record.getId() == id)
                 .toList();
 
         return sortedList.size();
     }
 
-    @Override
     public long countByVerdict(ValidationVerdict verdict) {
         List<ValidationRecord> sortedList = validationRecords.stream()
                 .filter(record -> record.getVerdict().equals(verdict))
@@ -42,13 +38,18 @@ public class InMemoryValidationRepository implements ValidationRepository {
         return sortedList.size();
     }
 
-    @Override
     public long countByVerdict(String userId, ValidationVerdict verdict) {
+        int id = Integer.parseInt(userId);
+
         List<ValidationRecord> sortedList = validationRecords.stream()
-                .filter(record -> record.getUserId().equals(userId))
                 .filter(record -> record.getVerdict().equals(verdict))
+                .filter(record -> record.getId() == id)
                 .toList();
 
         return sortedList.size();
+    }
+
+    public void clear() {
+        validationRecords.clear();
     }
 }

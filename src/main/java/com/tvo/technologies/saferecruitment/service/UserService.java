@@ -33,7 +33,9 @@ public class UserService {
         }
 
         log.info("Adding new user");
-        return userRepository.addNewUser(user);
+        userRepository.addNewUser(user);
+
+        return true;
     }
 
     private boolean isInvalidForCreate(User user) {

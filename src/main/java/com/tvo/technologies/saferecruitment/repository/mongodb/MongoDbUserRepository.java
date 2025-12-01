@@ -15,7 +15,7 @@ public class MongoDbUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean addNewUser(User user) {
-        return false;
+    public String addNewUser(User user) {
+        return " ";
     }
 }

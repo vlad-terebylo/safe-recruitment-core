@@ -8,5 +8,5 @@ public interface UserRepository {
 
     boolean updateUser(String id, User user);
 
-    boolean addNewUser(User user);
+    String addNewUser(User user);
 }
