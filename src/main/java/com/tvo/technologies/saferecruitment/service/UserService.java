@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public boolean addNewUser(User user) {
-        if (isInvalidForCreate(user)) {
+        if (isInvalidForCreation(user)) {
             log.error("Some of user's params are null");
             throw new InvalidUserException("User is invalid for creation");
         }
@@ -38,7 +38,7 @@ public class UserService {
         return true;
     }
 
-    private boolean isInvalidForCreate(User user) {
+    private boolean isInvalidForCreation(User user) {
         return Objects.isNull(user)
                 || Objects.isNull(user.getEmail())
                 || Objects.isNull(user.getPassword());
@@ -69,6 +69,11 @@ public class UserService {
     }
 
     public boolean changePsswd(String id, String psswd) {
+        if (Objects.isNull(id) || id.isEmpty()) {
+            log.error("User does not exists, or id field is empty");
+            throw new InvalidUserIdException("The user id is invalid");
+        }
+
         User user = userRepository.getUser(id);
 
         if (user.getPassword().equals(psswd)) {

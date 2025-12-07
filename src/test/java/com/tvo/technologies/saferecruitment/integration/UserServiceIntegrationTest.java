@@ -9,10 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class UserServiceIntegrationTest extends AbstractServiceTest {
     private static final String PRESENT_ID = "1";
@@ -122,8 +119,10 @@ public class UserServiceIntegrationTest extends AbstractServiceTest {
                 "qwas78/*KIUH");
 
         String newId = userRepository.addNewUser(user);
+        User actualUser = userService.getUser(newId);
 
-        assertTrue(Objects.nonNull(newId));
+        assertNotNull(actualUser);
+        assertEquals(user, actualUser);
     }
 
     @Test

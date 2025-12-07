@@ -25,4 +25,12 @@ public class ValidationRecord {
         this.riskCategory = response.riskCategory();
         this.redFlags = response.redFlags();
     }
+
+    public ValidationResponse toValidationResponse() {
+        return new ValidationResponse(
+                this.verdict,
+                this.description,
+                this.riskCategory,
+                this.redFlags);
+    }
 }

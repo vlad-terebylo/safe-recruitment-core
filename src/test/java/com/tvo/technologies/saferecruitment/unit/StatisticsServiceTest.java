@@ -37,7 +37,10 @@ public class StatisticsServiceTest {
         when(validationService.countValidationResponses()).thenReturn(countedValidationResponses);
         when(validationService.countValidationResponsesByVerdict(ValidationVerdict.SCAM)).thenReturn(countedValidationResponsesByVerdict);
 
-        assertThrows(IllegalArgumentException.class, () -> statisticsService.getStatistics());
+        Statistics statistics = statisticsService.getStatistics();
+
+        assertEquals(countedValidationResponses, statistics.getTotalNumberOfValidatedVacancies());
+        assertEquals(countedValidationResponsesByVerdict, statistics.getPercentageOfScamVacancies());
     }
 
     @Test
@@ -49,17 +52,6 @@ public class StatisticsServiceTest {
         when(validationService.countValidationResponsesByVerdict(ValidationVerdict.SCAM)).thenReturn(countedValidationResponsesByVerdict);
 
         assertThrows(ValidationResponsesLogicalException.class, () -> statisticsService.getStatistics());
-    }
-
-    @Test
-    void should_throw_an_exception_if_validation_response_by_verdict_number_is_fewer_than_than_zero() {
-        long countedValidationResponses = 20;
-        long countedValidationResponsesByVerdict = -1;
-
-        when(validationService.countValidationResponses()).thenReturn(countedValidationResponses);
-        when(validationService.countValidationResponsesByVerdict(ValidationVerdict.SCAM)).thenReturn(countedValidationResponsesByVerdict);
-
-        assertThrows(IllegalArgumentException.class, () -> statisticsService.getStatistics());
     }
 
     @Test
@@ -96,22 +88,14 @@ public class StatisticsServiceTest {
     void should_return_empty_user_statistics() {
         long countedValidationResponses = 0;
         long countedValidationResponsesByVerdict = 0;
- 
-        when(validationService.countValidationResponses(PRESENT_USER_ID)).thenReturn(countedValidationResponses);
-        when(validationService.countValidationResponsesByVerdict(PRESENT_USER_ID, ValidationVerdict.SCAM)).thenReturn(countedValidationResponsesByVerdict);
-
-        assertThrows(IllegalArgumentException.class, () -> statisticsService.getUserStatistics(PRESENT_USER_ID));
-    }
-
-    @Test
-    void should_throw_an_exception_if_user_statistics_validation_response_by_verdict_number_is_fewer_than_than_zero() {
-        long countedValidationResponses = 20;
-        long countedValidationResponsesByVerdict = -1;
 
         when(validationService.countValidationResponses(PRESENT_USER_ID)).thenReturn(countedValidationResponses);
         when(validationService.countValidationResponsesByVerdict(PRESENT_USER_ID, ValidationVerdict.SCAM)).thenReturn(countedValidationResponsesByVerdict);
 
-        assertThrows(IllegalArgumentException.class, () -> statisticsService.getUserStatistics(PRESENT_USER_ID));
+        Statistics statistics = statisticsService.getUserStatistics(PRESENT_USER_ID);
+
+        assertEquals(countedValidationResponses, statistics.getTotalNumberOfValidatedVacancies());
+        assertEquals(countedValidationResponsesByVerdict, statistics.getPercentageOfScamVacancies());
     }
 
     @Test

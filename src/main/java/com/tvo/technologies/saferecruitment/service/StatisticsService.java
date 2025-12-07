@@ -41,16 +41,12 @@ public class StatisticsService {
     }
 
     private Statistics buildStatistics(long countedValidationResponses, long countedValidationResponsesByVerdict) {
+        if (countedValidationResponses == 0) {
+            return new Statistics(0, 0);
+        }
+
         if (countedValidationResponsesByVerdict > countedValidationResponses) {
             throw new ValidationResponsesLogicalException("The number of validated responses by verdict should not be greater than the total number of responses");
-        }
-
-        if (countedValidationResponses <= 0) {
-            throw new IllegalArgumentException("The number of validated responses should not be zero or negative");
-        }
-
-        if (countedValidationResponsesByVerdict < 0) {
-            throw new IllegalArgumentException("The number of validated responses by verdict should not be negative");
         }
 
         float percentageOfScamVacancies = (float) (countedValidationResponsesByVerdict * 100) / countedValidationResponses;
