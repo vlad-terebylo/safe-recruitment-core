@@ -17,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User getUser(String id) {
-        if (Objects.isNull(id) || id.isEmpty()) {
+        if (Objects.isNull(id) || id.isBlank()) {
             log.error("User does not exists, or id field is empty");
             throw new InvalidUserIdException("The user id is invalid");
         }
@@ -40,12 +40,12 @@ public class UserService {
 
     private boolean isInvalidForCreation(User user) {
         return Objects.isNull(user)
-                || Objects.isNull(user.getEmail())
-                || Objects.isNull(user.getPassword());
+                || Objects.isNull(user.getPassword())
+                || Objects.isNull(user.getEmail());
     }
 
     public boolean updateUser(String id, User user) {
-        if (Objects.isNull(id) || id.isEmpty()) {
+        if (Objects.isNull(id) || id.isBlank()) {
             log.error("User does not exists, or id field is empty");
             throw new InvalidUserIdException("The user id is invalid");
         }
@@ -69,16 +69,21 @@ public class UserService {
     }
 
     public boolean changePsswd(String id, String psswd) {
-        if (Objects.isNull(id) || id.isEmpty()) {
+        if (Objects.isNull(id) || id.isBlank()) {
             log.error("User does not exists, or id field is empty");
             throw new InvalidUserIdException("The user id is invalid");
+        }
+
+        if (Objects.isNull(psswd) || psswd.isBlank()) {
+            log.error("Password does not exists, or is empty");
+            throw new InvalidPasswordException("The password is empty or is null");
         }
 
         User user = userRepository.getUser(id);
 
         if (user.getPassword().equals(psswd)) {
             log.error("The new password must not be same as the old one");
-            throw new ChangingPasswordFailedException("The password is invalid");
+            throw new InvalidPasswordException("The password is invalid");
         }
 
         log.info("Changing password");

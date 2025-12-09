@@ -115,7 +115,7 @@ public class UserServiceTest {
         String newPassword = user.getPassword();
         user.setPassword(newPassword);
 
-        assertThrows(ChangingPasswordFailedException.class, () -> userService.changePsswd(PRESENT_ID, newPassword));
+        assertThrows(InvalidPasswordException.class, () -> userService.changePsswd(PRESENT_ID, newPassword));
     }
 
     @Test

@@ -7,6 +7,8 @@ import com.tvo.technologies.saferecruitment.model.user.User;
 import com.tvo.technologies.saferecruitment.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +41,12 @@ public class UserServiceIntegrationTest extends AbstractServiceTest {
     @Test
     void should_throw_exception_if_user_id_is_null() {
         assertThrows(InvalidUserIdException.class, () -> userService.getUser(null));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "      "})
+    void should_throw_exception_if_user_id_is_empty(String emptyId) {
+        assertThrows(InvalidUserIdException.class, () -> userService.getUser(emptyId));
     }
 
     @Test
@@ -83,6 +91,77 @@ public class UserServiceIntegrationTest extends AbstractServiceTest {
     }
 
     @Test
+    void should_not_update_user_info_if_user_name_is_null() {
+        User user = new User(
+                null,
+                "Ray",
+                5,
+                EducationLevel.BACHELOR,
+                "Senior Java Developer",
+                "Quick learner. Worked in fintech companies for 3 years"
+        );
+
+        assertThrows(UpdateUserFailedException.class, () -> userService.updateUser(PRESENT_ID, user));
+    }
+
+    @Test
+    void should_not_update_user_info_if_user_surname_is_null() {
+        User user = new User(
+                "Nick",
+                null,
+                5,
+                EducationLevel.BACHELOR,
+                "Senior Java Developer",
+                "Quick learner. Worked in fintech companies for 3 years"
+        );
+
+        assertThrows(UpdateUserFailedException.class, () -> userService.updateUser(PRESENT_ID, user));
+    }
+
+    @Test
+    void should_not_update_user_info_if_user_education_is_null() {
+        User user = new User(
+                "Nick",
+                "Ray",
+                5,
+                null,
+                "Senior Java Developer",
+                "Quick learner. Worked in fintech companies for 3 years"
+        );
+
+        assertThrows(UpdateUserFailedException.class, () -> userService.updateUser(PRESENT_ID, user));
+    }
+
+    @Test
+    void should_not_update_user_info_if_user_target_position_is_null() {
+        User user = new User(
+                "Nick",
+                "Ray",
+                5,
+                EducationLevel.BACHELOR,
+                null,
+                "Quick learner. Worked in fintech companies for 3 years"
+        );
+
+        assertThrows(UpdateUserFailedException.class, () -> userService.updateUser(PRESENT_ID, user));
+    }
+
+    @Test
+    void should_not_update_user_info_if_user_additional_information_is_null() {
+        User user = new User(
+                "Nick",
+                "Ray",
+                5,
+                null,
+                "Senior Java Developer",
+                null
+        );
+
+        assertThrows(UpdateUserFailedException.class, () -> userService.updateUser(PRESENT_ID, user));
+    }
+
+
+    @Test
     void should_not_update_user_info_if_user_is_invalid() {
         assertThrows(UpdateUserFailedException.class, () -> userService.updateUser(PRESENT_ID, null));
     }
@@ -110,7 +189,29 @@ public class UserServiceIntegrationTest extends AbstractServiceTest {
 
         String newPassword = user.getPassword();
 
-        assertThrows(ChangingPasswordFailedException.class, () -> userService.changePsswd(newId, newPassword));
+        assertThrows(InvalidPasswordException.class, () -> userService.changePsswd(newId, newPassword));
+    }
+
+    @Test
+    void should_throw_exception_if_user_id_is_null_while_changing_password() {
+        assertThrows(InvalidUserIdException.class, () -> userService.changePsswd(null, "12345"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "      "})
+    void should_throw_exception_if_user_id_is_empty_while_changing_password(String emptyId) {
+        assertThrows(InvalidUserIdException.class, () -> userService.changePsswd(emptyId, "12345"));
+    }
+
+    @Test
+    void should_throw_exception_if_password_is_null() {
+        assertThrows(InvalidPasswordException.class, () -> userService.changePsswd(PRESENT_ID, null));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "      "})
+    void should_throw_exception_if_password_is_empty(String emptyPassword) {
+        assertThrows(InvalidPasswordException.class, () -> userService.changePsswd(PRESENT_ID, emptyPassword));
     }
 
     @Test
@@ -136,7 +237,22 @@ public class UserServiceIntegrationTest extends AbstractServiceTest {
     }
 
     @Test
+    void should_throw_exception_if_user_password_is_invalid() {
+        User user = new User("tvotech@mail.com",
+                null);
+
+        userRepository.addNewUser(user);
+
+        assertThrows(InvalidUserException.class, () -> userService.addNewUser(user));
+    }
+
+    @Test
     void should_throw_exception_if_user_is_invalid() {
+        assertThrows(InvalidUserException.class, () -> userService.addNewUser(null));
+    }
+
+    @Test
+    void should_throw_exception_if_user_email_is_invalid() {
         User user = new User(null,
                 "qwas78/*KIUH");
 
