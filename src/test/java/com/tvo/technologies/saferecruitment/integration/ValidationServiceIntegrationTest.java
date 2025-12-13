@@ -9,6 +9,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 public class ValidationServiceIntegrationTest extends AbstractServiceTest {
     private static final String TEST_USER_ID = "1";
@@ -26,7 +29,11 @@ public class ValidationServiceIntegrationTest extends AbstractServiceTest {
 
     @Test
     void should_get_valid_scam_vacancy_validation_response() {
-
+        stubFor(post(urlPathMatching("/v1beta/models/gemini-2.5-flash:generateContent"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.OK.value())
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("Text.")));
     }
 
     @Test

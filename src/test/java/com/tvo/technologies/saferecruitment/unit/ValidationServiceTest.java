@@ -49,6 +49,7 @@ public class ValidationServiceTest {
                 List.of(RedFlags.UNREALISTIC_SALARY));
 
         VacancyValidationRequest vacancy = new VacancyValidationRequest(
+                "573c664f-6d47-44df-8477-09fc89854cec",
                 "Barman",
                 "description",
                 List.of("To serve client"),
@@ -74,6 +75,7 @@ public class ValidationServiceTest {
         );
 
         VacancyValidationRequest vacancy = new VacancyValidationRequest(
+                "573c664f-6d47-44df-8477-09fc89854cec",
                 "Java software engineer",
                 "\"Program Start Date: July 2026\\n\" +\n" +
                         "                        \"\\n\" +\n" +
@@ -143,6 +145,7 @@ public class ValidationServiceTest {
     @Test
     void should_throw_exception_if_some_vacancy_validation_request_fields_are_null() {
         VacancyValidationRequest vacancyValidationRequest = new VacancyValidationRequest(
+                "573c664f-6d47-44df-8477-09fc89854cec",
                 "Senior software developer",
                 null,
                 null,
@@ -156,6 +159,7 @@ public class ValidationServiceTest {
     @Test
     void should_get_valid_company_validation_response() {
         CompanyValidationRequest companyValidationRequest = new CompanyValidationRequest(
+                "573c664f-6d47-44df-8477-09fc89854cec",
                 "Microsoft Corporation",
                 "Redmond, 980 52, USA",
                 "https://www.microsoft.com/",
@@ -184,6 +188,7 @@ public class ValidationServiceTest {
     @Test
     void should_throw_exception_if_some_company_validation_request_fields_are_null() {
         CompanyValidationRequest companyValidationRequest = new CompanyValidationRequest(
+                "573c664f-6d47-44df-8477-09fc89854cec",
                 "Google",
                 null,
                 null,

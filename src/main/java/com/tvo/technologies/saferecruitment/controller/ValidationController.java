@@ -15,13 +15,13 @@ public class ValidationController {
 
     private final ValidationService validationService;
 
-    @PostMapping("/vacancy/{userId}")
-    public ResponseEntity<ValidationResponse> vacancyValidation(@RequestParam String userId, @RequestBody VacancyValidationRequest vacancy) {
-        return ResponseEntity.ok(this.validationService.vacancyValidation(userId, vacancy));
+    @PostMapping("/vacancy")
+    public ResponseEntity<ValidationResponse> vacancyValidation(@RequestBody VacancyValidationRequest vacancy) {
+        return ResponseEntity.ok(this.validationService.vacancyValidation(vacancy.userId(), vacancy));
     }
 
-    @PostMapping("/company/{userId}")
-    public ResponseEntity<ValidationResponse> companyValidation(@RequestParam String userId, @RequestBody CompanyValidationRequest company) {
-        return ResponseEntity.ok(this.validationService.companyValidation(userId, company));
+    @PostMapping("/company")
+    public ResponseEntity<ValidationResponse> companyValidation(@RequestBody CompanyValidationRequest company) {
+        return ResponseEntity.ok(this.validationService.companyValidation(company.userId(), company));
     }
 }
