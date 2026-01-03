@@ -31,7 +31,7 @@ public class GeminiAiValidationService implements AiValidationService {
                         VACANCY_CONTEXT_PROMPT + "\n" + vacancyValidationPrompt,
                         null).text();
 
-        String formattedResponse = response.substring(response.indexOf("{"), response.indexOf("}"));
+        String formattedResponse = response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1);
 
         log.info("Returning a response from Gemini: {}", formattedResponse);
 

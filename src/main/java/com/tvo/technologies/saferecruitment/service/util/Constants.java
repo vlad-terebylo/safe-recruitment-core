@@ -124,6 +124,8 @@ public class Constants {
                     reviews: %s,
                     website: %s.
                     
-                    As a response return JUST JSON entity.
+                    As a response return JUST JSON entity like this:
+                    json
+                    {...}
             """;
 }
