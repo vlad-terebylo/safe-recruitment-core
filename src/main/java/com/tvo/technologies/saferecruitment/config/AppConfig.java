@@ -2,8 +2,6 @@ package com.tvo.technologies.saferecruitment.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
-import com.openai.client.OpenAIClient;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.tvo.technologies.saferecruitment.properties.AiProperties;
 import com.tvo.technologies.saferecruitment.repository.*;
 import com.tvo.technologies.saferecruitment.repository.inmemory.*;
@@ -16,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
-    public UserRepository getUserRepository() {
-        return new InMemoryUserRepository();
+    public UserMetadataRepository getUserRepository() {
+        return new InMemoryUserMetadataRepository();
     }
 
     @Bean
@@ -35,11 +33,6 @@ public class AppConfig {
     @Bean
     public ValidationRepository getValidationResult() {
         return new InMemoryValidationRepository();
-    }
-
-    @Bean
-    public OpenAIClient getOpenAiClient(AiProperties properties) {
-        return new OpenAIOkHttpClient.Builder().apiKey(properties.openaiKey()).build();
     }
 
     @Bean
