@@ -1,14 +1,15 @@
-package com.tvo.technologies.saferecruitment.integration.config.repository.mongo;
+package com.tvo.technologies.saferecruitment.integration.config.repository.inmemory;
 
 import com.tvo.technologies.saferecruitment.exception.UserAlreadyExistsException;
 import com.tvo.technologies.saferecruitment.exception.UserNotFoundException;
 import com.tvo.technologies.saferecruitment.model.user.UserMetadata;
+import com.tvo.technologies.saferecruitment.repository.UserMetadataRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class TestMongoDbUserRepository {
+public class TestInMemoryUserMetadataRepository implements UserMetadataRepository {
     private final List<UserMetadata> allUserMetadata = new ArrayList<>();
 
     public UserMetadata getUser(String id) {
@@ -26,7 +27,7 @@ public class TestMongoDbUserRepository {
     }
 
 
-    public boolean addNewUser(UserMetadata userMetadata) {
+    public String addNewUser(UserMetadata userMetadata) {
         boolean emailIsAlreadyPresent = allUserMetadata.stream()
                 .map(UserMetadata::getEmail)
                 .anyMatch(email -> email.equals(userMetadata.getEmail()));
@@ -36,7 +37,9 @@ public class TestMongoDbUserRepository {
         }
 
         String newId = UUID.randomUUID().toString();
-        return allUserMetadata.add(userMetadata.withId(newId));
+        allUserMetadata.add(userMetadata.withId(newId));
+
+        return newId;
     }
 
     public void clear() {

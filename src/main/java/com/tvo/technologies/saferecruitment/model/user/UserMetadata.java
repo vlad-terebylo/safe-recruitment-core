@@ -1,7 +1,5 @@
 package com.tvo.technologies.saferecruitment.model.user;
 
-import com.tvo.technologies.saferecruitment.model.dto.ChangePsswdRequestDto;
-import com.tvo.technologies.saferecruitment.model.dto.UserUpdateDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.With;
@@ -11,10 +9,9 @@ import java.util.Objects;
 @Data
 @With
 @AllArgsConstructor
-public class User {
+public class UserMetadata {
     private String id;
     private String email;
-    private String password;
     private String name;
     private String surname;
     private int experience;
@@ -22,12 +19,17 @@ public class User {
     private String targetPosition;
     private String additionalInformation;
 
-    public User(String email, String password) {
+    public UserMetadata(String email) {
         this.email = email;
-        this.password = password;
     }
 
-    public User(String name, String surname, int experience, EducationLevel education, String targetPosition, String additionalInformation) {
+    public UserMetadata(
+            String name,
+            String surname,
+            int experience,
+            EducationLevel education,
+            String targetPosition,
+            String additionalInformation) {
         this.name = name;
         this.surname = surname;
         this.experience = experience;
@@ -36,9 +38,15 @@ public class User {
         this.additionalInformation = additionalInformation;
     }
 
-    public User(String email, String password, String name, String surname, int experience, EducationLevel education, String targetPosition, String additionalInformation) {
+    public UserMetadata(
+            String email,
+            String name,
+            String surname,
+            int experience,
+            EducationLevel education,
+            String targetPosition,
+            String additionalInformation) {
         this.email = email;
-        this.password = password;
         this.name = name;
         this.surname = surname;
         this.experience = experience;
@@ -52,10 +60,15 @@ public class User {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof User user)) {
+        if (!(object instanceof UserMetadata userMetadata)) {
             return false;
         }
 
-        return Objects.equals(this.email, user.email);
+        return Objects.equals(this.email, userMetadata.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.email);
     }
 }

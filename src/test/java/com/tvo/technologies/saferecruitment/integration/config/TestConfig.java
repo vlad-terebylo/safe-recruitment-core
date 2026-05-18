@@ -2,9 +2,9 @@ package com.tvo.technologies.saferecruitment.integration.config;
 
 import com.google.genai.Client;
 import com.google.genai.types.HttpOptions;
-import com.tvo.technologies.saferecruitment.integration.config.repository.inmemory.TestInMemoryUserRepository;
+import com.tvo.technologies.saferecruitment.integration.config.repository.inmemory.TestInMemoryUserMetadataRepository;
 import com.tvo.technologies.saferecruitment.integration.config.repository.inmemory.TestInMemoryValidationRepository;
-import com.tvo.technologies.saferecruitment.repository.UserRepository;
+import com.tvo.technologies.saferecruitment.repository.UserMetadataRepository;
 import com.tvo.technologies.saferecruitment.repository.ValidationRepository;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +15,8 @@ public class TestConfig {
 
     @Bean
     @Primary
-    public UserRepository getTestUserRepository() {
-        return new TestInMemoryUserRepository();
+    public UserMetadataRepository getTestUserRepository() {
+        return new TestInMemoryUserMetadataRepository();
     }
 
     @Bean
